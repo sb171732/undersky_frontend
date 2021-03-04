@@ -4,7 +4,8 @@
 <!--    <HelloWorld msg="Welcome to Your Vue.js App"/>-->
   <h3>Региональный исторический диктант, посвященный 100-летию образования Тувинской Народной Республики</h3>
   
-  <el-button class="w3-margin-bottom" @click="gettest">Начать тест</el-button>
+  <el-button class="w3-margin-bottom w3-border-blue" @click="gettest">Начать тест на русском языке</el-button>
+  <el-button class="w3-margin-bottom w3-border-green" @click="gettest2">Начать тест на тувинском языке </el-button>
   <div class="w3-margin">
   </div>
    <el-timeline>
@@ -80,7 +81,7 @@ end(){
 	for (let w of this.questions){
 		if (w.radio===w.a_true_id){ col++}
 	} 		this.col=col
-	axios.post('http://95.167.178.158/other/projects/undersky/rest.php','&save_res='+col+'&u_id='+getCookie('user_id')).then((response) => { console.log(response) }).catch((error) => { console.log(error); });	
+	axios.post('https://test-undersky.rtyva.ru/rest.php','&save_res='+col+'&u_id='+getCookie('user_id')).then((response) => { console.log(response) }).catch((error) => { console.log(error); });	
 }
 	else {  this.$message({
           message: 'Ответьте на все вопросы теста!',
@@ -96,30 +97,36 @@ end(){
 return this.answers.filter(function(n){
 	return n.q_id===p
 })
-  },gettest(){
-console.log('')
-  }
+  },
+   gettest2(){
+	axios.post('https://test-undersky.rtyva.ru/rest.php','&get_q2=').then((response) => {
+		this.questions=response.data,console.log(response.data[4])
+}).catch((error) => { console.log(error); });	
+	axios.post('https://test-undersky.rtyva.ru/rest.php','&get_a2=').then((response) => {
+		this.answers=response.data,console.log(response.data[4])
+}).catch((error) => {console.log(error);});	 
+ 
+}
+ , gettest(){
+	axios.post('https://test-undersky.rtyva.ru/rest.php','&get_q=').then((response) => {
+		this.questions=response.data,console.log(response.data[4])
+}).catch((error) => { console.log(error); });	
+	axios.post('https://test-undersky.rtyva.ru/rest.php','&get_a=').then((response) => {
+		this.answers=response.data,console.log(response.data[4])
+}).catch((error) => {console.log(error);});	 
+ 
+}
 },
 created(){
 	console.log(getCookie('code'))
 	console.log(getCookie('user_id'))
 	if (getCookie('code')===undefined) { this.$router.push('/') }
    else{
-axios.post('http://95.167.178.158/other/projects/undersky/rest.php','check_user='+getCookie('code')+'&u_id='+getCookie('user_id')).then((response) => {
+axios.post('https://test-undersky.rtyva.ru/rest.php','check_user='+getCookie('code')+'&u_id='+getCookie('user_id')).then((response) => {
 		if (response!='succes'){ this.$route.push('/') }
 }).catch((error) => { console.log(error); });	
 	
 	
-	
-	axios.post('http://95.167.178.158/other/projects/undersky/rest.php','&get_q=').then((response) => {
-		this.questions=response.data,console.log(response.data[4])
-}).catch((error) => { console.log(error); });	
-	axios.post('http://95.167.178.158/other/projects/undersky/rest.php','&get_a=').then((response) => {
-		this.answers=response.data,console.log(response.data[4])
-})
-.catch((error) => {
-				console.log(error);
-});	 
 	
 	
 }	}

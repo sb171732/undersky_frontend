@@ -3,6 +3,8 @@
 <!--    <img alt="Vue logo" src="../assets/logo.png">-->
 <!--    <HelloWorld msg="Welcome to Your Vue.js App"/>-->
   <h3>Для тестирования потребуется email </h3>
+
+    {{ user_code }}
    <div class="" v-if="reg1">
  <el-select class="w3-margin-bottom" v-model="sel_cat" placeholder="Выбрать категорию">
     <el-option
@@ -43,11 +45,11 @@ export default {
 	return  {
    reg1:true,
    reg2:false,
-   input_fio:'',
-   input_email:'',
+   input_fio:'asdasd',
+   input_email:'sauronkan@gmail.com',
    sel_cat:'',
    code_confirm:'',		
-   code:'',		
+   user_code: 0 ,		
    user_id:''		
 	}
   }
@@ -59,16 +61,26 @@ console.log(response)
 }).catch((error) => { console.log(error); });
  },	 
  confirm(){
-	if (this.code!=this.code_confirm){ 
+	if (this.user_code!=this.code_confirm){ 
 this.$message({showClose: true,message: 'Код неверен!',type: 'warning'});   }
 else{ this.$router.push('/test'),setCookie('code',this.code),setCookie('user_id',this.user_id) }
  },
  send(){
+   
+   fetch('https://api.rtyva.ru/api/feedback/register',{
+       method: "POST",
+       headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+       body: JSON.stringify({fio: this.input_fio, userType: this.sel_cat,email:this.input_email})
+     })
+ .then(response => response.json())
+  .then(result =>{ this.user_code = result.code , this.user_id=result.id, this.reg1=false, this.reg2=true}  );
+  // 
+    
+    // console.log(user.id)
 
- axios.post('http://95.167.178.110:9987/api/feedback/register','fio='+this.input_fio+'&email='+this.input_email+'&userType='+this.sel_cat).then((response) => {
-	this.code=response.data.code,this.user_id=response.data.id, this.reg1=false,this.reg2=true
-//	this.save_user()
-}).catch((error) => { console.log(error); });	
  }
  }	
 }
