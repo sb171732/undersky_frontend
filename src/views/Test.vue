@@ -41,7 +41,7 @@
  </tr>
   </table>
   <h4 class="w3-pading-top" style="text-align:center;width:100%">Набрано баллов: {{ col }}  </h4>
-  <el-progress type="circle" :percentage="Math.round(col*100/10)"></el-progress>
+  <el-progress type="circle" :percentage="Math.round(col*100/25)"></el-progress>
   <span slot="footer" class="dialog-footer">
     
     <el-button type="primary" @click="$router.push('/')">Выйти</el-button>

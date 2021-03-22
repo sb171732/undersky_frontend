@@ -56,7 +56,7 @@ export default {
 	,
  methods:{
 save_user(){
- axios.post('http://95.167.178.158/other/projects/undersky/rest.php','save_user='+this.input_fio+'&email='+this.input_email+'&userType='+this.sel_cat+'&code='+this.code).then((response) => {
+ axios.post('https://test-undersky.rtyva.ru/rest.php','save_user='+this.input_fio+'&email='+this.input_email+'&userType='+this.sel_cat+'&code='+this.code).then((response) => {
 console.log(response)
 }).catch((error) => { console.log(error); });
  },	 
@@ -66,7 +66,7 @@ this.$message({showClose: true,message: 'Код неверен!',type: 'warning'
 else{ this.$router.push('/test'),setCookie('code',this.code),setCookie('user_id',this.user_id) }
  },
  send(){
-   
+         //api.rtyva.ru/api/feedback/register
    fetch('https://api.rtyva.ru/api/feedback/register',{
        method: "POST",
        headers: {
@@ -76,7 +76,18 @@ else{ this.$router.push('/test'),setCookie('code',this.code),setCookie('user_id'
        body: JSON.stringify({fio: this.input_fio, userType: this.sel_cat,email:this.input_email})
      })
  .then(response => response.json())
-  .then(result =>{ this.user_code = result.code , this.user_id=result.id, this.reg1=false, this.reg2=true}  );
+  .then(result =>{
+    console.log(result)
+    if (result.error===true){ 
+          this.$message({
+          message: result.reason,
+          type: 'warning'
+        });
+    } else {
+       this.user_code = result.code , this.user_id=result.id, this.reg1=false, this.reg2=true
+    }
+    // 
+    }  );
   // 
     
     // console.log(user.id)
@@ -84,12 +95,6 @@ else{ this.$router.push('/test'),setCookie('code',this.code),setCookie('user_id'
  }
  }	
 }
-
-
-
-
-
-
 
 
 </script>

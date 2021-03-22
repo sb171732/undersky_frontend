@@ -2,7 +2,7 @@
   <div id="app">
     <img src="./assets/logo.png" width="100%">
     <div>
-    <p>{{ $route.path }}</p>
+   
 <el-menu v-if="$route.path==='/'" default-active="1" class="el-menu-demo" mode="horizontal" @select="handleSelect" router>
   <el-menu-item index="1" route="/">Регистрация / Вход</el-menu-item>
   <el-menu-item index="2" route="/test" disabled>Тестирование</el-menu-item>
@@ -13,10 +13,6 @@
   <el-menu-item index="2" route="/test">Тестирование</el-menu-item>
   <el-menu-item index="3" disabled>Узнать результаты теста</el-menu-item>
 </el-menu>
-    
-     
-       
-    
     <router-view/>   
     </div>
 <!--    <HelloWorld msg="Welcome to Your Vue.js App"/>-->
